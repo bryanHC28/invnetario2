@@ -1,0 +1,7 @@
+git config --global user.email "bryyan28@hotmail.com"
+git config --global user.name "bryanHC28"
+git init
+git add .
+git commit -m 'comentario'
+git branch -M main
+git remote add origin https://github.com/EmpresaVirtual/Equipos.git
