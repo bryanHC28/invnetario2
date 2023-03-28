@@ -1,5 +1,5 @@
 <div>
-    @if (isset($dateSearch) and $dateSearch == true)
+
         <div class="form-group mb-2">
             <div class="input-group-btn">
                 <button type="button" class="btn btn-primary" id="daterange-btn-{{ $id }}">
@@ -9,7 +9,7 @@
                 </button>
             </div>
         </div>
-    @endif
+
 
     <div class="py-2">
         <table id="{{ $id }}DataTable" style="font-size:14px" class="table table-hover " style="width: 100%">
@@ -31,6 +31,8 @@
     </style>
 
     @section('js_component')
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
     <script>
         function toUrl(href) {
             window.location.href = href;
@@ -101,7 +103,7 @@
                  "scrollX": true,
                 "info": true,
                 "autoWidth": false,
-                @if(isset($exportButtons) and $exportButtons == true)
+
                 dom: 'Bfrtip',
                 buttons: [
                     {
@@ -122,6 +124,7 @@
                     },
                     {
                         extend: 'pdf',
+                        orientation: 'landscape',
                         @if(isset($visibilidadColumnasExportar))
                             exportOptions: {
                                 columns: columnasVisibles
@@ -133,7 +136,7 @@
                         columns: ':not(".select-disabled")'
                     }
                 ],
-                @endif
+
                 "lengthMenu": [
                     [7, 10, 30, 31, -1],
                     [7, 10, 30, 31, "Mostrar Todo"]
@@ -151,10 +154,10 @@
             let dataTable={{ $id }}DataTable;
             var status = $(this).val();
             $('.type-dropdown').val(status)
-            dataTable.column(9).search(status).draw();
+            dataTable.column(8).search(status).draw();
             })
 
-            @if (isset($dateSearch) and $dateSearch == true)
+
                 let año = {{ $año ?? '(new Date).getFullYear()' }};
                 let mes = {{ $mes ?? '(new Date).getMonth() + 1' }};
                 let start = moment('' + año + '-' + mes + '').startOf('month');
@@ -167,10 +170,9 @@
                     startDate: moment(start),
                     endDate: moment(end),
                     ranges: {
-                      'Hoy': [moment(), moment()],
                       'YTD': [moment().subtract(1, 'days').startOf('year'), moment()],
                       'Ultimos 30 dias': [moment().subtract(29, 'days'), moment()],
-                      'Este mes': [moment().startOf('month'), moment().endOf('month')],
+                      'Este mes': [moment().subtract(1, 'month').endOf('month'), moment().endOf('month')],
                       'Mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
                     }
                   },
@@ -180,7 +182,7 @@
                       minDateFilter = start;
                       maxDateFilter = end;
                       $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                        var date = Date.parse(data[0]);
+                        var date = Date.parse(data[1]);
                         if (
                           (isNaN(minDateFilter) && isNaN(maxDateFilter)) ||
                           (isNaN(minDateFilter) && date <= maxDateFilter) ||
@@ -215,12 +217,12 @@
                     end = moment(start).endOf('month')
                   }
                   if (isDate(start)) {
-                    $('#daterange-btn-{{ $id }} span').html(start.format('DD MMM YYYY') + ' - ' + end.format('DD MMM YYYY'));
+                    $('#daterange-btn-{{ $id }} span').html(start.format('01/01/2022') + ' - ' + end.format('DD/MM/YYYY'));
                   }
-                  minDateFilter = start;
+                  minDateFilter = start.format('01/01/2022');
                   maxDateFilter = end;
                   $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                    var date = Date.parse(data[0]);
+                    var date = Date.parse(data[1]);
                     if (
                       (isNaN(minDateFilter) && isNaN(maxDateFilter)) ||
                       (isNaN(minDateFilter) && date <= maxDateFilter) ||
@@ -234,7 +236,7 @@
                   {{ $id }}DataTable.draw();
                 }
                 IncDecMonth();
-            @endif
+
         });
     </script>
     @endsection

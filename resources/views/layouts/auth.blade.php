@@ -15,9 +15,9 @@
         html {
             background: #52caca;
             /* fallback for old browsers */
-            background: -webkit-linear-gradient(to right, #52caca, #1E2945);
+            background: -webkit-linear-gradient(to right, #5086C1, #5086C1);
             /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to right, #52caca, #1E2945);
+            background: linear-gradient(to right, #5086C1, #5086C1);
             /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
         }
 
@@ -53,11 +53,11 @@
                         <img class="brand-logo" src="{{ asset('img/sumapp.png') }}" alt="SuMapp">
                     </div>
                     <div class="mt-2">
-                     <h3 class="fw-bold">Sumapp</h3>
+
                     </div>
                     <hr>
                     <div class="mb-3">
-                        <h3>{{ config('app.name') }}</h3>
+                        <h3>Equipamiento</h3>
                     </div>
                     {{-- @if (config('app.debug') == true)
                         <div class="my-3 p-2 alert alert-warning">

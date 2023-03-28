@@ -1,5 +1,8 @@
 <?php
 
+
+
+
 return [
 
     /*
@@ -63,8 +66,8 @@ return [
     |
     */
 
-    'logo' => '<b>EQUIPOS</b>',
-    'logo_img' => 'vendor/adminlte/dist/img/check.jpg',
+    'logo' => '<b>Equipamiento  </b>',
+    'logo_img' => 'vendor/adminlte/dist/img/sumapp.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -86,7 +89,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/check.jpg',
+            'path' => 'vendor/adminlte/dist/img/sumapp.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -109,7 +112,7 @@ return [
     'preloader' => [
         'enabled' => true,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/check.jpg',
+            'path' => 'vendor/adminlte/dist/img/sumapp.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
@@ -314,101 +317,167 @@ return [
             'icon'        => 'fas fa-home',
             //'label'       => 4,
             'label_color' => 'success',
+            'can' => 'respuestas.index',
         ],
 
         [
-            'text'    => 'Acciones',
+            'text'       => 'Gantt',
+            'icon_color' => 'purple',
+            'route'     => 'gantt',
+            'can' => 'gantt',
+        ],
+
+        [
+            'text'       => 'Cuestionarios',
+            'icon_color' => 'red',
+            'route'     => 'responder.index',
+            'can' => 'respuestas.index',
+        ],
+        [
+            'text'       => 'Resumen',
+            'icon_color' => 'yellow',
+            'route'     => 'respuestas.index',
+
+            'can' => 'respuestas.index',
+        ],
+        [
+            'text'       => 'Aceptados',
+            'icon_color' => 'green',
+            'route'     => 'aceptados',
+            'can' => 'responder.index',
+        ],
+
+        [
+            'text'       => 'Reportes',
+            'icon_color' => 'cyan',
+            'route'     => 'reportes.index',
+             'can' => 'reportes.index',
+        ],
+
+        [
+            'text'    => 'Asignar cuestionario',
+            'route'  => 'tabla.index',
+            'icon'    => 'fas fa-file-signature',
+            'icon_color' => 'cyan',
+            'can' => 'tabla.index',
+
+
+        ],
+        [
+            'text'    => 'Cambiar fecha',
+            'route'  => 'fecha.index',
+            'icon'    => 'fa fa-calendar',
+            'icon_color' => 'cyan',
+            'can' => 'fecha.index',
+
+
+        ],
+
+        [
+            'text'    => 'Areas',
+            'route'  => 'areas.create',
+            'icon'    => '	fas fa-american-sign-language-interpreting',
+            'icon_color' => 'cyan',
+            'can' => 'areas.create',
+
+        ],
+        [
+            'text'    => 'Categorias',
+            'route'     => 'categoria.create',
+            'icon'    => '	fas fa-stream',
+            'icon_color' => 'cyan',
+            'can' => 'categoria.create',
+
+
+        ],
+        [
+            'text'    => 'Equipos',
+            'route'     => 'equipo.create',
+            'icon'    => 'fas fa-laptop',
+            'icon_color' => 'cyan',
+            'can' => 'equipos.pilot',
+
+
+        ],
+
+        [
+            'text'    => 'Equipos',
+            'route'     => 'create_monalisa',
+            'icon'    => 'fas fa-laptop',
+            'icon_color' => 'cyan',
+            'can' => 'equipos.monalisa',
+
+
+        ],
+
+
+		  [
+            'text'    => 'Tickets',
+            'route'  => 'tickets',
+            'icon'    => 'fas fa-receipt',
+            'icon_color' => 'cyan',
+            'can' => 'tickets',
+
+
+        ],
+
+        [
+            'text'    => 'Inventario',
+            'route'  => 'inventario.index',
+            'icon'    => 'fas fa-box-open',
+            'icon_color' => 'cyan',
+            'can' => 'inventario.index',
+
+
+        ],
+
+        [
+            'text'    => 'Reportes',
             'icon'    => 'fas fa-fw fa-share',
+            'icon_color' => 'cyan',
+            'can' => 'equipos.monalisa',
             'submenu' => [
-                [
-                    'text'    => 'Nuevo',
-                    'url'     => '#',
-                    'icon'    => 'fa fa-plus',
 
-                    'submenu' => [
-                       // [
-                           // 'text' => 'Sucursal',
-                            //'route'  => 'sucursal.create',
-                            //'icon'    => '	fas fa-house-user',
-                        //],
-
-                        [
-                            'text'    => 'Excel',
-                            'route'  => 'tabla.index',
-                            'icon'    => 'fas fa-file-excel',
-
-
-                        ],
-
-                        [
-                            'text'    => 'Areas',
-                            'route'  => 'areas.create',
-                            'icon'    => '	fas fa-american-sign-language-interpreting',
-                            'can'    => 'tabla.index',
-
-                        ],
-                        [
-                            'text'    => 'Categorias',
-                            'route'     => 'categoria.create',
-                            'icon'    => '	fas fa-stream',
-                            'can'    => 'tabla.index',
-
-                        ],
-                        [
-                            'text'    => 'Equipos',
-                            'route'     => 'equipo.create',
-                            'icon'    => 'fas fa-laptop',
-                            'can'    => 'tabla.index',
-
-                        ],
-                    ],
-                ],
 
                 [
-                    'text'    => 'Check-list',
-                    'url'     => '#',
-                    'icon'    => 'fa fa-check-circle',
-                    'submenu' => [
 
-                        [
-                            'text' => 'Checklist',
-                            'route'     => 'subchecklist.index',
-                            'icon'    => 'far fa-clipboard',
-                            'can'    => 'tabla.index',
+                    'text' => 'Cabos Monalisa',
+                    'icon'    => 'far fa-file-pdf',
+                    'icon_color' => 'red',
+                    'route'  => 'inicio_reporte_monalisa',
+                    'can' => 'equipos.monalisa',
 
-
-                        ],
-
-
-
-                        [
-                            'text' => 'Preguntas',
-                            'route'     => 'checklist.index',
-                            'icon'    => 'fas fa-edit',
-                            'can'    => 'tabla.index',
-
-
-                        ],
-
-                        [
-                            'text' => 'Vista check-list',
-                            'route'     => 'vista_checklist.index',
-                            'icon'    => 'fas fa-list-ol',
-
-                        ],
-                        [
-                            'text'    => 'Respuestas',
-                            'url'     => '#',
-                            'can'    => 'tabla.index',
-
-
-                        ],
-
-                    ],
                 ],
+                [
+                    'text' => 'Sucursal 2',
+                    'icon'    => 'far fa-file-pdf',
+                    'icon_color' => 'red',
+                    'route'  => 'inicio_reporte_monalisa',
+                    'can' => 'equipos.monalisa',
+                ]
 
             ],
         ],
+
+        // [
+        //     'text'    => 'Historial',
+        //     'route'  => 'inventario.index',
+        //     'icon'    => 'fas fa-book',
+        //     'icon_color' => 'cyan',
+        //     'can' => 'equipos.monalisa',
+
+
+        // ],
+        [
+            'text'    => 'Crear cuestionario',
+            'route'     => 'subchecklist.index',
+            'icon'    => 'fa fa-check-circle',
+            'icon_color' => 'red',
+            'can' => 'subchecklist.index',
+
+        ],
+
+
 
     ],
 

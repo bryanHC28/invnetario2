@@ -12,15 +12,23 @@ class Respuestas extends Model
 
     protected $table = 'respuestas';
 
-    protected $fillable = ['id_checklist','id_subchecklist','respuestas','status'];
+    protected $fillable = ['id_controlmanto','id_sucursal','columnas','observaciones','comentarios','columnas_fotos','fotos','equipo','respuestas','id_usuario_responzable','estatus','Estado_eliminado'];
 
-    public function checklist(){
-    return $this->belongsTo('App\Models\Checklist','id_checklist','id');
+
+
+    public function controlmanto(){
+        return $this->belongsTo('App\Models\controlmnto','id_controlmanto','id');
+        }
+
+
+    public function usuario(){
+    return $this->belongsTo('App\Models\User','id_contesto','id');
     }
 
-    public function subchecklist(){
-    return $this->belongsTo('App\Models\Subchecklist','id_subchecklist','id');
-    }
+    public function reporte(){
+        return $this->belongsTo('App\Models\Reporte','id','id_respuesta');
+        }
+
 
 
 }

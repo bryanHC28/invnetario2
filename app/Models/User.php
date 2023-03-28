@@ -60,4 +60,34 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+
+
+     public function comboareas(){
+
+        return $this->hasManyThrough('App\Models\Areas','App\Models\Sucursal','id','id_sucursal','id_sucursal','id');
+
+         }
+
+         public function combocategorias(){
+
+            return $this->hasManyThrough('App\Models\categoriaequipos','App\Models\Sucursal','id','id_sucursal','id_sucursal','id');
+
+             }
+
+
+    // public function equipos(){
+
+    //     return $this->hasManyThrough('App\Models\Equipos','App\Models\Empresa','id','id_empresa','id_empresa','id');
+
+    //      }
+
+
+    public function combobox(){
+
+
+        return $this->hasManyThrough('App\Models\categoriachecklist','App\Models\Sucursal','id','id_sucursal','id_sucursal','id');
+
+             }
+
 }

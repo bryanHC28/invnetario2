@@ -11,7 +11,10 @@ class Checklist extends Model
 
     protected $table = 'checklist';
 
-protected $fillable = ['nombre','status'];
+    protected $fillable = ['id_categoriachecklist','nombre','Estado_eliminado' ];
 
+    public function categoriack(){
+    return $this->belongsTo('App\Models\categoriachecklist','id_categoriachecklist','id');
+    }
 
 }

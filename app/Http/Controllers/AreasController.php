@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Areas;
-
+use Illuminate\Support\Facades\DB;
 
 class AreasController extends Controller
 {
@@ -36,54 +36,32 @@ class AreasController extends Controller
      */
     public function store(Request $request)
     {
-        $datos= $request->all();
-        Areas::create($datos);
-        return redirect('/areas')->with('crear','ok');
+
+
+        DB::beginTransaction();
+        try {
+
+            $area = new Areas;
+            $area->nombre = $request->nombre;
+            $area->id_sucursal = auth()->user()->id_sucursal;
+            $area->Estado_eliminado = 1;
+            $area->save();
+            DB::commit();
+            return redirect('/areas')->with('crear', 'ok');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect('/dash')->with('error', 'ok');
+        }
     }
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function llenar_area($id_sucursal)
     {
-        //
+
+        $area = Areas::where('id_sucursal', $id_sucursal)
+        ->where('Estado_eliminado', 1)->get();
+        return $area;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

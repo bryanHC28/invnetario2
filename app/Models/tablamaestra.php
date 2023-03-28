@@ -11,5 +11,5 @@ class tablamaestra extends Model
 
     protected $table = 'tablamaestra';
 
-    protected $fillable = ['Equipo','Categoria','Nombre','Area','SigMnto'];
+    protected $fillable = ['Equipo','Modelo','Clave','Categoria','Nombre','Area','SigMnto','Id_checklist'];
 }

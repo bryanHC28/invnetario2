@@ -16,33 +16,29 @@ class RolSeeder extends Seeder
      */
     public function run()
     {
-       $role1 = Role::create(['name'=>'Admin']);
+       $role1 = Role::create(['name'=>'Administrador']);
        $role2 = Role::create(['name'=>'Supervisor']);
+       $role3 = Role::create(['name'=>'Usuario']);
+       $role4 = Role::create(['name'=>'AdminMonalisa']);
 
-       Permission::create(['name' => 'tabla.index'])->assignRole($role1);
-       Permission::create(['name' => 'tabla.create'])->assignRole($role1);
+       Permission::create(['name' => 'gantt'])->syncRoles([$role1,$role4]);
+       Permission::create(['name' => 'responder.index'])->syncRoles([$role1,$role2]);
+       Permission::create(['name' => 'respuestas.index'])->syncRoles([$role1,$role2,$role4]);
+       Permission::create(['name' => 'reportes.index'])->syncRoles([$role3]);
+       Permission::create(['name' => 'tabla.index'])->syncRoles([$role1,$role4]);
+       Permission::create(['name' => 'fecha.index'])->syncRoles([$role1,$role4]);
+       Permission::create(['name' => 'areas.create'])->syncRoles([$role1,$role4]);
+       Permission::create(['name' => 'categoria.create'])->syncRoles([$role1,$role4]);
+       Permission::create(['name' => 'equipos.pilot'])->syncRoles([$role1]);
+       Permission::create(['name' => 'equipos.monalisa'])->syncRoles([$role4]);
+       Permission::create(['name' => 'tickets'])->syncRoles([$role1]);
+       Permission::create(['name' => 'inventario.index'])->syncRoles([$role4]);
+       Permission::create(['name' => 'subchecklist.index'])->syncRoles([$role1,$role4]);
 
-       Permission::create(['name' => 'equipo.create'])->assignRole($role1);
-       Permission::create(['name' => 'equipo.edit'])->assignRole($role1);
-       Permission::create(['name' => 'equipo.destroy'])->assignRole($role1);
 
-       Permission::create(['name' => 'areas.create'])->assignRole($role1);
 
-       Permission::create(['name' => 'categoria.create'])->assignRole($role1);
 
-       Permission::create(['name' => 'checklist.index'])->syncRoles([$role1,$role2]);
-       Permission::create(['name' => 'checklist.create'])->syncRoles([$role1,$role2]);
 
-       Permission::create(['name' => 'preguntas.create'])->syncRoles([$role1,$role2]);
-       Permission::create(['name' => 'preguntas.update'])->syncRoles([$role1,$role2]);
-       Permission::create(['name' => 'preguntas.destroy'])->assignRole($role1);
-
-       Permission::create(['name' => 'vista_checklist.index'])->syncRoles([$role1,$role2]);
-       Permission::create(['name' => 'vista_checklist.combo_categoria'])->syncRoles([$role1,$role2]);
-       Permission::create(['name' => 'vista_checklist.llenar_tabla_filtro'])->syncRoles([$role1,$role2]);
-       Permission::create(['name' => 'vista_checklist.llenar_tabla_contestar'])->syncRoles([$role1,$role2]);
-       Permission::create(['name' => 'vista_checklist.llenar_formulario'])->syncRoles([$role1,$role2]);
-       Permission::create(['name' => 'vista_checklist.llenar_tabla_preguntas'])->syncRoles([$role1,$role2]);
 
     }
 }

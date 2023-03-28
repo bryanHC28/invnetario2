@@ -3,21 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Categorias;
-use App\Models\Areas;
+use App\Models\{categoriaequipos,Areas};
+use Illuminate\Support\Facades\DB;
 
 
 class CategoriasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $area=Areas::orderBy('id')->get();
-        return view('Categoria.create')->with('area',$area);
+
+
+
+        $area=Areas::orderBy('id')
+        ->where('id_sucursal',auth()->user()->id_sucursal)
+        ->get();
+        return view('Categoria.create',compact('area'));
     }
 
     /**
@@ -27,8 +27,13 @@ class CategoriasController extends Controller
      */
     public function create()
     {
-        $area=Areas::orderBy('id')->get();
-        return view('Categoria.create')->with('area',$area);
+
+
+
+        $area=Areas::orderBy('id')
+        ->where('id_sucursal',auth()->user()->id_sucursal)
+        ->get();
+        return view('Categoria.create',compact('area'));
     }
 
     /**
@@ -39,53 +44,31 @@ class CategoriasController extends Controller
      */
     public function store(Request $request)
     {
-        $datos= $request->all();
-        Categorias::create($datos);
+
+        DB::beginTransaction();
+        try {
+        $categoria =  new categoriaequipos;
+        $categoria->nombre = $request->nombre;
+        $categoria->Estado_eliminado = 1;
+        $categoria->id_sucursal = auth()->user()->id_sucursal;
+        $categoria->id_area = $request->id_area;
+        $categoria->save();
+        DB::commit();
         return redirect('/categoria')->with('crear','ok');
+    } catch (\Exception $e) {
+        DB::rollback();
+        return redirect('/dash')->with('error', 'ok');
+    }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+
+
+    public function combo_categoria($id_area)
     {
-        //
+        return categoriaequipos::where('id_area', $id_area)
+            ->where('Estado_eliminado', 1)
+            ->get();
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

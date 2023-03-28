@@ -5,7 +5,6 @@ namespace App\Imports;
 use App\Models\tablamaestra;
 use App\Models\Areas;
 use Maatwebsite\Excel\Concerns\ToModel;
-
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -32,7 +31,8 @@ class tablaImport implements ToModel,WithHeadingRow,WithBatchInserts,WithChunkRe
             'Categoria' => $row['categoria'],
             'Nombre'    => $row['nombre'],
             'Area'    => $row['area'],
-            'SigMnto'    => $row['sigmmto']
+            'SigMnto'    => $row['sigmmto'],
+            'Id_checklist'    => $row['checklist']
         ]);
     }
 

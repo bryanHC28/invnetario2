@@ -3,90 +3,60 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Checklist;
-use App\Models\Categorias;
-use App\Models\Preguntas;
+use App\Models\categoriachecklist;
+use Illuminate\Support\Facades\DB;
 class ChecklistController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $pregunta= Preguntas::where('id_checklist','')->get();
-        $checklist= Checklist::orderBy('id')->get();
-        $id_checklist="";
-        return view('Cuestionario.index')->with('checklist',$checklist)->with('pregunta',$pregunta)->with('id_checklist',$id_checklist);
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('Cuestionario.index');
 
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $datos= $request->all();
-        Checklist::create($datos);
-        return redirect('/checklist');
+
+
+
+
+            DB::beginTransaction();
+            try {
+            $checklist= new categoriachecklist;
+            $checklist->nombre=$request->nombre;
+            $checklist->id_sucursal=$request->id_sucursales;
+            $checklist->Estado_eliminado=1;
+            $checklist->save();
+            DB::commit();
+            return redirect('/subchecklist')->with('crear', 'ok');
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return redirect('/dash')->with('error', 'ok');
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
+        DB::beginTransaction();
+        try {
+        $checklist = categoriachecklist::find($id);
+        $checklist->Estado_eliminado = 0;
+        $checklist->save();
+        DB::commit();
+        return redirect('/subchecklist')->with('eliminar','ok');
+    } catch (\Exception $e) {
+        DB::rollback();
+        return redirect('/dash');
+    }
 
     }
+
+
+    public function llenar_combo_checklist($id_sucursal)
+    {
+        return categoriachecklist::where('id_sucursal', $id_sucursal)
+        ->where('Estado_eliminado', 1)->get();
+    }
+
+
+
 }

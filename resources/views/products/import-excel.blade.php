@@ -18,7 +18,7 @@
 
 
 
-@can('tabla.index')
+
 
 <div class="container">
     <div class="row justify-content-center">
@@ -35,7 +35,7 @@
                     </div>
                     @endif
 
-                    <form class=" flexbox" action="{{route('tabla.store')}}" method="POST" enctype="multipart/form-data">
+                    <form class=" flexbox"@if (auth()->user()->id_sucursal==1)action="{{route('tabla.store')}}" @elseif (auth()->user()->id_sucursal==2)action="{{route('excel_monalisa')}}"@endif method="POST" enctype="multipart/form-data">
                         @csrf
 
 
@@ -49,23 +49,25 @@
     </div>
 </div>
 
-@endcan
+
+
+<br>
+
 
 
 <div class="card">
     <div class="card-body">
 
 
-<table id="example" class="table table-striped" style="font-size:14px">
-    <thead class="bg-primary">
+<table id="example" class="table table-striped display responsive nowrap" style="font-size:14px">
+    <thead style="background-color: #759ECA">
         <tr>
-            <th>Clave</th>
-            <th>Area</th>
-            <th>Categoria</th>
-            <th>Nombre</th>
-            @can('tabla.index')
-            <th>Acciones</th>
-            @endcan
+            <th style="color:#ffffff">Clave</th>
+            <th style="color:#ffffff">Area</th>
+            <th style="color:#ffffff">Categoria</th>
+            <th style="color:#ffffff">Nombre</th>
+            <th style="color:#ffffff">Acciones</th>
+
         </tr>
     </thead>
     <tbody>
@@ -73,28 +75,35 @@
         <tr>
 
 
+@if (empty($preguntas->clave))
+<td>Sin clave</td>
+@else
+<td>{{$preguntas->clave}}</td>
+@endif
 
-            <td>{{$preguntas->clave}}</td>
-            <td>{{$preguntas->area}}</td>
-            <td>{{$preguntas->categoria}}</td>
-            <td>{{$preguntas->nombre}}</td>
-            @can('tabla.index')
+            <td><li style="white-space: initial"> {{$preguntas->area->nombre}}</li></td>
+            <td>{{$preguntas->categorias->nombre}}</td>
+            <td><li style="white-space: initial"> {{$preguntas->nombre_equipo}}</li></td>
+
             <td>
 
                 <div class="btn-group">
 
 
 
-                            <a class="btn btn-warning btn-sm" href="{!! asset('equipo/'.$preguntas->id.'/edit') !!}" >
-                                <i class="fas fa-pencil-alt"></i>
+                            <a onclick="Loader.show()" style="background-color: #F1E1A5" data-bs-toggle="mensaje" title="Asignar nuevo cuestionario para: {{$preguntas->clave}}"  class="btn btn-sm" href="{!! asset('equipo/'.$preguntas->id.'/edit') !!}" >
+                                <i  class="	fas fa-compress"></i>
                             </a>
 
+
+                            &nbsp;
+                            &nbsp;
 
 
                             {!! Form::open(['method' =>'DELETE','url'=>
                             '/equipo/'.$preguntas->id,'class'=>'form-eliminar'])!!}
-                                <button style="margin-left: 10px" type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash-alt"></i>
+                                <button style="background-color: #A42121 " data-bs-toggle="mensaje" title="Eliminar equipo: {{$preguntas->clave}}" style="margin-left: 10px" type="submit" class="btn btn-sm">
+                                    <i style="color: #ffffff" class="fas fa-trash-alt"></i>
                                 </button>
                             {!! Form::close() !!}
 
@@ -104,20 +113,19 @@
 
                 </div>
             </td>
-            @endcan
 
+            <div id="boxLoading"></div>
         </tr>
         @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <th>Clave</th>
-                <th>Area</th>
-                <th>Categoria</th>
-                <th>Nombre</th>
-                @can('tabla.index')
-                <th>Acciones</th>
-                @endcan
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+
             </tr>
         </tfoot>
     </table>
@@ -134,6 +142,10 @@
 
 @section('css')
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.bootstrap5.min.css">
@@ -142,49 +154,34 @@
             text-align: center;
 
 }
+
+
+.loading {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url('https://hackernoon.imgix.net/images/0*4Gzjgh9Y7Gu8KEtZ.gif') 50% 50% no-repeat rgb(249, 249, 249);
+  opacity: .8;
+}
     </style>
 @stop
 
 
 @section('js')
 
-<script src="https://code.jquery.com/jquery-3.5.1.js">
-</script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.4/howler.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-<script>
-
-
-    $('#example').DataTable({
-        responsive:true,
-        autoWidth:false,
-
-
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ registros por pagina",
-            "zeroRecords": "Sin registros  - disculpa",
-            "info": "Mostrando la pagina _PAGE_ de _PAGES_",
-            "infoEmpty": "No records available",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            'search': "Buscar",
-            'paginate':{
-                'next':'Siguiente',
-                'previous':'Anterior'
-
-            }
-
-        }
-
-});
-
-
-</script>
-
+<script src="{{ asset('js/piedatatable.js') }}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.3.0/js/responsive.bootstrap5.min.js"></script>
-
+<script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+<script src="{{ asset('js/tooltip.js') }}"></script>
+<script src="{{ asset('js/sweetalert.js') }}"></script>
+<script src="{{ asset('js/loader.js') }}"></script>
 
 
 @if (session('actualizar') == 'ok')
@@ -194,6 +191,12 @@
         'Su registro ha sido actualizado con exito!',
         'success'
     )
+    let sound = new Howl({
+              src: ["{{ asset('audio/success.mp4') }}"],
+              volume: 1.0
+            });
+
+            sound.play()
 </script>
 @endif
 
@@ -207,39 +210,16 @@
        'Su registro ha sido eliminado con exito!',
        'success'
      )
+     let sound = new Howl({
+              src: ["{{ asset('audio/success.mp4') }}"],
+              volume: 1.0
+            });
 
+            sound.play()
 </script>
 
 
 @endif
-<script>
-    $('.form-eliminar').submit(function(e){
-e.preventDefault();
 
 
-Swal.fire({
-  title: '¿Estas seguro de querer eliminar este registro?',
-  text: "¡No podrás revertir esto!",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Si, borrar!',
-  cancelButtonText: 'Cancelar'
-}).then((result) => {
-  if (result.value) {
-
-
-this.submit();
-    // Swal.fire(
-    //   'Deleted!',
-    //   'Your file has been deleted.',
-    //   'success'
-    // )
-  }
-})
-
-});
-
-</script>
 @stop

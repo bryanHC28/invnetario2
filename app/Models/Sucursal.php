@@ -11,7 +11,7 @@ class Sucursal extends Model
 
     protected $table = 'sucursal';
 
-protected $fillable = ['id_empresa','nombre','status'];
+protected $fillable = ['id_empresa','nombre_sucursal','Estado_eliminado'];
 
 public function empresas(){
 return $this->belongsTo('App\Models\Empresa','id_empresa','id');
